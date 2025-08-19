@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  quote-committer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: autonomous-quote-committer
+    restart: unless-stopped
+    
+    # Environment configuration
+    environment:
+      - NODE_ENV=production
+      - DEV_MODE=true
+      - DEV_INTERVAL=30000  # 30 seconds for safe demo
+      - LOG_LEVEL=info
+      - AUTO_PUSH=false
+      - GIT_USER_NAME=Quote Committer Bot
+      - GIT_USER_EMAIL=quotes@docker.local
+      - MAX_QUOTE_CYCLES=100
+    
+    # Mount the repository as a volume to persist commits
+    volumes:
+      - ./:/app/repo:rw
+      - quote-logs:/app/logs
+    
+    # Working directory should be the mounted repo
+    working_dir: /app/repo
+    
+    # Override the default command to work in the mounted repository
+    command: ["node", "/app/src/quote-committer.js"]
+    
+    # Resource limits to prevent overwhelming the system
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: Web interface for monitoring (future enhancement)
+  # quote-monitor:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.monitor
+  #   container_name: quote-monitor
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - quote-committer
+
+volumes:
+  quote-logs:
+    driver: local
+
+networks:
+  default:
+    name: quote-committer-network

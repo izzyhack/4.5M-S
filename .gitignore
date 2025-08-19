@@ -1,0 +1,17 @@
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.DS_Store
+*.log
+logs/
+.nyc_output/
+coverage/
+dist/
+build/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

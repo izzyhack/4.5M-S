@@ -1,0 +1,31 @@
+{
+  "name": "autonomous-tech-quote-committer",
+  "version": "1.0.0",
+  "description": "Autonomous system that commits new quotes about technology and innovation every 4.5 milliseconds",
+  "main": "src/quote-committer.js",
+  "scripts": {
+    "start": "node src/quote-committer.js",
+    "dev": "node src/quote-committer.js --dev",
+    "test": "node test/test-runner.js",
+    "install-service": "sudo cp systemd/quote-committer.service /etc/systemd/system/ && sudo systemctl daemon-reload",
+    "setup": "bash setup.sh"
+  },
+  "keywords": [
+    "automation",
+    "git",
+    "quotes",
+    "technology",
+    "innovation",
+    "commits"
+  ],
+  "author": "Autonomous Tech Quote Committer",
+  "license": "MIT",
+  "dependencies": {
+    "simple-git": "^3.20.0",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

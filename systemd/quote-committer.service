@@ -1,0 +1,42 @@
+[Unit]
+Description=Autonomous Tech Quote Committer
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nobody
+Group=nogroup
+WorkingDirectory=/opt/quote-committer
+ExecStart=/usr/bin/node src/quote-committer.js
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+
+# Environment configuration
+Environment=NODE_ENV=production
+Environment=DEV_MODE=true
+Environment=DEV_INTERVAL=60000
+Environment=LOG_LEVEL=info
+Environment=AUTO_PUSH=false
+Environment=MAX_QUOTE_CYCLES=1000
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/quote-committer/logs /opt/quote-committer
+
+# Resource limits
+LimitNOFILE=1024
+MemoryMax=512M
+CPUQuota=50%
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quote-committer
+
+[Install]
+WantedBy=multi-user.target
