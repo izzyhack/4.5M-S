@@ -1,0 +1,44 @@
+[Unit]
+Description=4.5M-S Quote Committer System
+Documentation=https://github.com/izzyhack/4.5M-S
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nodejs
+Group=nodejs
+WorkingDirectory=/opt/4.5m-s
+ExecStart=/usr/bin/node src/index.js
+ExecReload=/bin/kill -USR1 $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=4.5m-s-quotes
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/4.5m-s/logs
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+
+# Environment
+Environment=NODE_ENV=production
+Environment=LOG_LEVEL=info
+Environment=COMMIT_INTERVAL=4.5
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=512M
+CPUQuota=50%
+
+# Monitoring
+WatchdogSec=60
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

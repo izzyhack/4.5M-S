@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  quote-committer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 4.5m-s-quote-committer
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - GIT_USER_NAME=4.5M-S Bot
+      - GIT_USER_EMAIL=bot@4.5m-s.com
+      - COMMIT_INTERVAL=4.5
+      - LOG_LEVEL=info
+    volumes:
+      # Mount git repository (adjust path as needed)
+      - ./.git:/app/.git
+      - ./logs:/app/logs
+      # Mount SSH keys if needed for authentication
+      # - ~/.ssh:/home/nodejs/.ssh:ro
+    working_dir: /app
+    networks:
+      - quote-network
+    labels:
+      - "com.4.5m-s.service=quote-committer"
+      - "com.4.5m-s.version=1.0.0"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: monitoring service
+  monitoring:
+    image: prom/node-exporter:latest
+    container_name: 4.5m-s-monitoring
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    networks:
+      - quote-network
+    profiles:
+      - monitoring
+
+networks:
+  quote-network:
+    driver: bridge
+    name: 4.5m-s-network
+
+volumes:
+  quote_logs:
+    name: 4.5m-s-logs

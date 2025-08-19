@@ -1,17 +1,47 @@
 {
   "name": "4.5m-commit-system",
   "version": "1.0.0",
-  "description": "Autonomous tech quote committer system",
+  "description": "Autonomous tech quote committer system that commits inspiring quotes every 4.5 minutes",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "NODE_ENV=development node src/index.js",
+    "test": "node scripts/test.js",
+    "health": "bash scripts/healthcheck.sh",
+    "setup": "bash scripts/setup.sh",
+    "docker:build": "docker build -t 4.5m-s-quotes .",
+    "docker:run": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "lint": "echo 'No linting configured'",
+    "install:service": "sudo bash scripts/setup.sh"
   },
+  "keywords": [
+    "automation",
+    "git",
+    "quotes",
+    "technology",
+    "innovation",
+    "philosophy",
+    "commit",
+    "bot"
+  ],
   "dependencies": {
-    "simple-git": "^2.43.0",
-    "node-fetch": "^2.6.1",
-    "winston": "^3.3.3",
-    "dotenv": "^10.0.0"
+    "simple-git": "^3.19.0",
+    "winston": "^3.10.0",
+    "dotenv": "^16.3.1"
   },
-  "author": "Your Name",
-  "license": "MIT"
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izzyhack/4.5M-S.git"
+  },
+  "author": "izzyhack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/izzyhack/4.5M-S/issues"
+  },
+  "homepage": "https://github.com/izzyhack/4.5M-S#readme"
 }
